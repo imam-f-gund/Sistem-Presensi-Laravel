@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body >
+
+	<textarea type="text" id="data" rows="20" cols="100" autofocus></textarea>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+<script>
+	$(document).on('keypress',function(e) {
+		if(e.which == 13) {
+			var a = $("#data").val();
+
+			$.ajax({
+				type: "GET",
+				url:"/api/cekPre/"+a,
+				crossDomain: true,
+				cache: false,
+				success: function(data){
+				//console.log(data);
+				if (data != 'tidak') {
+					var id = data[0].id_presensi_dosen;
+					var unik = data[0].generate;
+					$.ajax({
+						type: "put",
+						url: "/api/validasiPre"+unik+"/"+id,
+						crossDomain: true,
+						cache: false,
+						success: function(da){
+							location.reload();
+							console.log(da);
+						},
+					});
+				}else{
+					//console.log(data);
+				}
+
+			}
+		});
+		}
+	});
+
+
+</script>
+
+
+</html>
